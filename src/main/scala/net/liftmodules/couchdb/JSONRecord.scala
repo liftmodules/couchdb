@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package net.liftweb
+package net.liftmodules
 package couchdb
 
 import java.math.MathContext

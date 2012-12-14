@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package net.liftweb
+package net.liftmodules
 package couchdb
 
 import java.net.ConnectException
@@ -20,9 +20,9 @@ import dispatch.{Http, StatusCode}
 
 import org.specs2.mutable.Specification
 
-import common._
-import json._
-import JsonDSL._
+import net.liftweb.common._
+import net.liftweb.json._
+import net.liftweb.json.JsonDSL._
 import DocumentHelpers._
 
 

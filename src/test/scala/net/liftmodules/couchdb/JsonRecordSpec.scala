@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package net.liftweb
+package net.liftmodules
 package couchdb
 
 import org.specs2.mutable.Specification
 import org.specs2.execute.Result
 
-import common._
-import json._
-import JsonDSL._
-import record.field._
+import net.liftweb.common._
+import net.liftweb.json._
+import net.liftweb.json.JsonDSL._
+import net.liftweb.record.field._
 import DocumentHelpers.jobjectToJObjectExtension
 
 
