@@ -30,9 +30,10 @@ libraryDependencies <<= (liftVersion, scalaVersion) { (lv, sv) =>
 publishTo <<= version { _.endsWith("SNAPSHOT") match {
   case true  => Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
   case false => Some("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
-}
+ }
 }
 
+parallelExecution in Test := false
 
 // For local deployment:
 
