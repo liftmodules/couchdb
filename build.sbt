@@ -16,6 +16,9 @@ resolvers += "CB Central Mirror" at "http://repo.cloudbees.com/content/groups/pu
 
 resolvers += "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
 
+resolvers ++= Seq("snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
+                    "releases"  at "http://oss.sonatype.org/content/repositories/releases")
+
 libraryDependencies <<= (liftVersion, scalaVersion) { (lv, sv) =>
   "net.liftweb" 	%% "lift-record"   % lv 	  % "compile->default" ::
   "net.databinder"  %% "dispatch-core" % "0.8.9"  % "compile->default" ::
