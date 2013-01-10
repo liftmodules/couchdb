@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2011 WorldWide Conferencing, LLC
+ * Copyright 2010-2013 WorldWide Conferencing, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@ package net.liftmodules
 package couchdb
 
 import scala.reflect.Manifest
-import dispatch.{Http, StatusCode}
+import dispatch.classic.{Http, StatusCode}
 import net.liftweb.common.{Box, Failure, Full}
 import Box.option2Box
 import net.liftweb.json.Implicits.string2jvalue

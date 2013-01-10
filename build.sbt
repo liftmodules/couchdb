@@ -4,25 +4,26 @@ organization := "net.liftmodules"
 
 liftVersion <<= liftVersion ?? "2.5-SNAPSHOT"
 
-version <<= liftVersion apply { _ + "-1.0-SNAPSHOT" }
+version <<= liftVersion apply { _ + "-1.1-SNAPSHOT" }
 
-scalaVersion := "2.9.2"
+scalaVersion := "2.10.0"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
-crossScalaVersions := Seq("2.9.2", "2.9.1-1", "2.9.1")
+crossScalaVersions := Seq("2.10.0", "2.9.2", "2.9.1-1", "2.9.1")
 
 resolvers += "CB Central Mirror" at "http://repo.cloudbees.com/content/groups/public"
 
 resolvers += "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
 
 libraryDependencies <<= (liftVersion, scalaVersion) { (lv, sv) =>
-  "net.liftweb" %% "lift-record" % lv % "compile->default" ::
-   "org.specs2" %% "specs2"  % "1.11" % "test"  ::
-    (sv match {
-      case "2.9.2" | "2.9.1" | "2.9.1-1" => "net.databinder"  % "dispatch-http_2.9.1" % "0.7.8" % "compile->default"
-      case _ => "net.databinder"  %% "dispatch-http" % "0.7.8" % "compile->default"
-    }) ::
+  "net.liftweb" 	%% "lift-record"   % lv 	  % "compile->default" ::
+  "net.databinder"  %% "dispatch-core" % "0.8.9"  % "compile->default" ::
+  "net.databinder"  %% "dispatch-http" % "0.8.9"  % "compile->default" ::
+    (sv match { 
+	 case "2.9.2" | "2.9.1" | "2.9.1-1" => "org.specs2" %% "specs2" % "1.12.3" % "test"
+	 case "2.10.0" => "org.specs2" %% "specs2" % "1.13" % "test"
+      })  ::
   Nil
 }
 
