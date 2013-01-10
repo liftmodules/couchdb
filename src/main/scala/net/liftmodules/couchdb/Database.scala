@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2011 WorldWide Conferencing, LLC
+ * Copyright 2010-2013 WorldWide Conferencing, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@ import scala.collection.{Map => MapTrait}
 import scala.collection.immutable.Map
 import scala.collection.mutable.ArrayBuffer
 import scala.reflect.Manifest
-import dispatch.{:/, Handler, Http, Request, StatusCode}
+import dispatch.classic.{:/, Handler, Http, Request, StatusCode}
+import Request._
 import net.liftweb.common.{Box, Empty, Failure, Full}
 import net.liftweb.json.{DefaultFormats, Formats}
 import net.liftweb.json.Extraction.{decompose, extract}
@@ -84,7 +85,7 @@ trait Document extends Request with FetchableAsJObject {
 /** Trait of requests that represent a particular document revision in a Couch database */
 trait DocumentRevision extends Request with FetchableAsJObject {
   /** Destroy the document. The document's current revision must be the revision represented by this request */
-  def delete: Handler[Unit] = DELETE >|
+  def delete: Handler[Unit] = this.DELETE.>|
 }
 
 /** Trait of requests that represent a particular design document */
@@ -111,7 +112,7 @@ trait Queryable[SelfType <: Queryable[SelfType]] {
   protected def newQueryable(req: Request): SelfType
 
   /** Add parameters to the query */
-  def withParams(params: MapTrait[String, Any]): SelfType = newQueryable(this <<? params)
+  def withParams(params: Traversable[(String, String)]): SelfType = newQueryable(this <<? params)
 
   /** Fetch results of the query */
   def query: Handler[Box[QueryResults]] = this ># (QueryResult.read _)
@@ -135,7 +136,7 @@ trait Queryable[SelfType <: Queryable[SelfType]] {
   def to(highValue: JValue, docid: String): SelfType = withParams(Map("endkey" -> compact(render(highValue)), "endkey_docid" -> docid))
 
   /** Limit the query to the given number of results */
-  def limit(i: Int): SelfType = withParams("limit" -> i)
+  def limit(i: Int): SelfType = withParams("limit" -> i.toString)
 
   /** Specify that stale view data is okay. Used for optimization -- some other query must keep the view fresh. */
   def staleOk: SelfType = withParams("stale" -> "ok")
@@ -147,7 +148,7 @@ trait Queryable[SelfType <: Queryable[SelfType]] {
   def group: SelfType = withParams("group" -> "true")
 
   /** Group results at the given level (see http://wiki.apache.org/couchdb/Introduction_to_CouchDB_views) */
-  def group(level: Int): SelfType = withParams(Map("group" -> "true") + ("group_level" -> level))
+  def group(level: Int): SelfType = withParams(Map("group" -> "true") + ("group_level" -> level.toString))
 
   /** Specify that reduction should not occur */
   def dontReduce: SelfType = withParams("reduce" -> "false")
@@ -188,8 +189,9 @@ class Database(couch: Request, database: String) extends Request(couch / databas
     this ># (extract[DatabaseInfo] _)
   }
 
+
   /** Destroy the database (DELETE) */
-  def delete: Handler[Unit] = DELETE >|
+  def delete: Handler[Unit] = this.DELETE.>|
 
   /** Access all documents in the database with a queryable interface */
   def all: AllDocs = new Request(this / "_all_docs") with AllDocs { }

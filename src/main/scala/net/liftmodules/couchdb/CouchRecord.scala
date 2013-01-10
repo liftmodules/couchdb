@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2011 WorldWide Conferencing, LLC
+ * Copyright 2010-2013 WorldWide Conferencing, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@ package net.liftmodules
 package couchdb
 
 import scala.collection.immutable.Map
-import dispatch.{Handler, Http}
+import dispatch.classic.{Handler, Http}
 import net.liftweb.common.{Box, Empty, Failure, Full}
 import Box.{box2Iterable, option2Box}
 import net.liftweb.json.JsonAST.{JField, JString, JValue}

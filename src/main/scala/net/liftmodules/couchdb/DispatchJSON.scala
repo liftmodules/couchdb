@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2011 WorldWide Conferencing, LLC
+ * Copyright 2010-2013 WorldWide Conferencing, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,9 @@
 package net.liftmodules
 package couchdb
 
-import dispatch.{Handler, Request}
+import dispatch.classic._
 import net.liftweb.json.JsonAST.{JValue, render}
 import net.liftweb.json.{JsonParser, Printer}
-import org.apache.http.client.methods.{HttpPost, HttpPut}
-import org.apache.http.entity.StringEntity
-import org.apache.http.params.HttpProtocolParams
 
 object DispatchJSON {
   /** Implicitly convert a string (representing a URL) to a JSONRequest, which has operators for sending and receiving Lift JSON JValues */
@@ -38,32 +35,33 @@ case class JSONRequest(req: Request) {
   def ># [T](f: JValue => T): Handler[T] = handleJSON(f)
 
   /** PUT a JValue rendered as compact JSON to the resource referenced by the request */
-  def put(jvalue: JValue): Request = req.next {
-    val m = new HttpPut
-    m.setEntity(jvalueToStringEntity(jvalue))
-    HttpProtocolParams.setUseExpectContinue(m.getParams, false)
-    Request.mimic(m) _
-  } 
+  def put(jvalue: JValue): Request = {
+    req.PUT.copy(
+      body=Some(jvalueToRefStringEntity(jvalue))
+    )
+  }
 
   /** Alias for put */
   def <<<# (jvalue: JValue): Request = put(jvalue)
 
   /** POST a JValue rendered as compact JSON to the resource referenced by the request */
-  def post(jvalue: JValue): Request = req.next {
-    val m = new HttpPost
-    m.setEntity(jvalueToStringEntity(jvalue))
-    HttpProtocolParams.setUseExpectContinue(m.getParams, false)
-    Request.mimic(m) _
-  }
+  def post(jvalue: JValue): Request =  req.POST.copy(
+    body=Some(jvalueToRefStringEntity(jvalue))
+  )
 
   /** Alias for post */
   def <<# (jvalue: JValue): Request = post(jvalue)
 
-  /** Convert a JValue into a StringEntity with the application/json content type */
-  private def jvalueToStringEntity(in: JValue): StringEntity = {
-    val entity = new StringEntity(Printer.compact(render(in)), Request.factoryCharset)
-    entity.setContentType("application/json")
-    entity
+//  /** Convert a JValue into a StringEntity with the application/json content type */
+//  private def jvalueToStringEntity(in: JValue): StringEntity = {
+//    val entity = new StringEntity(Printer.compact(render(in)), Request.factoryCharset)
+//    entity.setContentType("application/json")
+//    entity
+//  }
+
+  /** Convert a JValue into a RefStringEntity with the application/json content type */
+  private def jvalueToRefStringEntity(in: JValue): RefStringEntity = {
+    new RefStringEntity(Printer.compact(render(in)), "application/json", Request.factoryCharset)
   }
 }
 
