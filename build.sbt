@@ -50,8 +50,6 @@ publishArtifact in Test := false
 
 pomIncludeRepository := { _ => false }
 
-licenses += ("Apache License, Version 2.0", url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
-
 pomExtra := (
   <url>https://github.com/liftmodules/couchdb</url>
     <licenses>
