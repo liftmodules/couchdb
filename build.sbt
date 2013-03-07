@@ -2,9 +2,9 @@ name := "lift-couchdb"
 
 organization := "net.liftmodules"
 
-liftVersion <<= liftVersion ?? "2.5-SNAPSHOT"
+liftVersion <<= liftVersion ?? "2.5-RC2"
 
-version <<= liftVersion apply { _ + "-1.1-SNAPSHOT" }
+version <<= liftVersion apply { _ + "-1.1" }
 
 scalaVersion := "2.10.0"
 
