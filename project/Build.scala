@@ -1,11 +1,12 @@
 import sbt._
+import sbt.Keys._
 
-object Build extends sbt.Build {
+object LiftModuleBuild extends Build {
 
-val liftVersion = SettingKey[String]("liftVersion", "Version number of the Lift Web Framework")
+  val liftVersion = SettingKey[String]("liftVersion", "Full version number of the Lift Web Framework")
 
-val project = Project("lift-couchdb", file("."))
+  val liftEdition = SettingKey[String]("liftEdition", "Lift Edition (short version number to append to artifact name)")
+
+  val project = Project("LiftModule", file("."))
 
 }
-
-

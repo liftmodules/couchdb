@@ -2,9 +2,13 @@ name := "lift-couchdb"
 
 organization := "net.liftmodules"
 
+version := "1.1-SNAPSHOT"
+
 liftVersion <<= liftVersion ?? "2.5-SNAPSHOT"
 
-version <<= liftVersion apply { _ + "-1.1-SNAPSHOT" }
+liftEdition <<= liftVersion apply { _.substring(0,3) }
+
+name <<= (name, liftEdition) { (n, e) =>  n + "_" + e }
 
 scalaVersion := "2.10.0"
 
@@ -17,10 +21,10 @@ resolvers += "CB Central Mirror" at "http://repo.cloudbees.com/content/groups/pu
 resolvers += "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
 
 libraryDependencies <<= (liftVersion, scalaVersion) { (lv, sv) =>
-  "net.liftweb" 	%% "lift-record"   % lv 	  % "compile->default" ::
+  "net.liftweb" 	  %% "lift-record"   % lv 	    % "provided" ::
   "net.databinder"  %% "dispatch-core" % "0.8.9"  % "compile->default" ::
   "net.databinder"  %% "dispatch-http" % "0.8.9"  % "compile->default" ::
-    (sv match { 
+    (sv match {
 	 case "2.9.2" | "2.9.1" | "2.9.1-1" => "org.specs2" %% "specs2" % "1.12.3" % "test"
 	 case "2.10.0" => "org.specs2" %% "specs2" % "1.13" % "test"
       })  ::
