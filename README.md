@@ -5,6 +5,10 @@ lift-couchdb
 
 To include this module in your Lift project, update your `libraryDependencies` in `build.sbt` to include:
 
+*Lift 2.6.x*:
+
+    "net.liftmodules" %% "lift-couch_2.6" % "1.2"
+
 *Lift 2.5.x*:
 
     "net.liftmodules" %% "lift-couch_2.5" % "1.2"
